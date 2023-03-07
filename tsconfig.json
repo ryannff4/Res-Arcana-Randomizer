@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "*": ["node_modules/@react-native-community/*", "node_modules/*"]
+      "*": ["node_modules/*"]
     },
     "noEmit": true,
     "resolveJsonModule": true,
