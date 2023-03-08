@@ -73,6 +73,7 @@ export default class App extends Component {
     var expansionPlacesOfPower = []
     this.setState({ isVisible: true });
     var totalPlacesOfPowerToChoose = 5;
+    // add place of power tiles to the possiblePlacesOfPower array if expansions are being used, as well as change the necessary # of places of power to use
     if (this.state.hasLuxEtTenebrae || this.state.hasPerlaeImperii) {
       totalPlacesOfPowerToChoose = this.state.numberOfPlayers + 2;
       if (this.state.hasLuxEtTenebrae) {
@@ -95,9 +96,12 @@ export default class App extends Component {
     for (let i = 0; i < totalPlacesOfPowerToChoose; i++) {
       randomNumChosenArr.push(false);
     }
+
     console.log('');
     console.log(`length of possiblePlacesOfPower = ${(this.state.possiblePlacesOfPower).length}`);
     console.log('');
+
+    // randomly pick an unchosen place of power tile until the needed number has been chosen
     while (totalPlacesOfPowerToChoose > 0) {
       var randomNum = Math.floor(Math.random() * this.state.possiblePlacesOfPower.length);
       if (!(randomNumChosenArr[randomNum])) {
@@ -108,11 +112,9 @@ export default class App extends Component {
         console.log(`chosenTile = ${chosenTile}`);
         randomNumChosenArr[randomNum] = true;
 
-        // randomly choose side of the tile and add to array of chosenPlacesofPower
-
+        // randomly choose one side of the PoP tile and add to array of chosenPlacesofPower
         var sideOfTile = chosenTile[Math.round(Math.random())];
-        this.chosenPlacesofPower
-          .push(sideOfTile);
+        this.chosenPlacesofPower.push(sideOfTile);
         console.log(`chosenPlacesofPower = ${this.chosenPlacesofPower}`);
         console.log('');
 
@@ -151,8 +153,6 @@ export default class App extends Component {
                 title="Generate Randomized Places of Power"
                 onPress={() => this.Generate()}
               />
-              {/* {this.state.isVisible?<Text>`{this.chosenPlacesofPower
-          }`</Text>:null} */}
               {this.state.isVisible
                 ? <GenerateFlatList
                   chosenPlacesofPower
@@ -167,5 +167,3 @@ export default class App extends Component {
     );
   }
 }
-
-// export default App;
