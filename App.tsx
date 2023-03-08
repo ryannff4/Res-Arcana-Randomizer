@@ -17,7 +17,8 @@ import {
   Text,
   useColorScheme,
   View,
-  Button
+  Button,
+  FlatList
 } from 'react-native';
 
 import {
@@ -28,31 +29,14 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-// function Section({ children, title }: SectionProps): JSX.Element {
-//   const isDarkMode = useColorScheme() === 'dark';
-//   return (
-//     <View style={styles.sectionContainer}>
-//       <Text
-//         style={[
-//           styles.sectionTitle,
-//           {
-//             color: isDarkMode ? Colors.white : Colors.black,
-//           },
-//         ]}>
-//         {title}
-//       </Text>
-//       <Text
-//         style={[
-//           styles.sectionDescription,
-//           {
-//             color: isDarkMode ? Colors.light : Colors.dark,
-//           },
-//         ]}>
-//         {children}
-//       </Text>
-//     </View>
-//   );
-// }
+function GenerateFlatList({ chosenPlacesofPower }) {
+
+  return <FlatList
+    data={chosenPlacesofPower
+    }
+    renderItem={({ item }) => <Text>{item}</Text>}
+  />;
+}
 
 // function App(): JSX.Element {
 export default class App extends Component {
@@ -62,72 +46,78 @@ export default class App extends Component {
     hasPerlaeImperii: false,
     isVisible: false,
     possiblePlacesOfPower
-    : {
-      1: ['Catacombs of the Dead', 'Sacrificial Pit'],
-      2: ['Coral Castle', 'Sunken Reef'],
-      3: ['Dwarven Mines', 'Cursed Forge'],
-      4: [`Alchemist's Tower`, 'Sacred Grove'],
-      5: [`Sorceror's Bestiary`, `Dragon's Lair`]
-    }
+      : [['Catacombs of the Dead', 'Sacrificial Pit'],
+      ['Coral Castle', 'Sunken Reef'],
+      ['Dwarven Mines', 'Cursed Forge'],
+      [`Alchemist's Tower`, 'Sacred Grove'],
+      [`Sorceror's Bestiary`, `Dragon's Lair`]
+      ]
   };
 
-  randomizedPlacesOfPower: string[] = []
+  chosenPlacesofPower: string[] = []
 
-  ResetPossiblePlacesOfPower() {
-    this.setState({ possiblePlacesOfPower
-      : {
-      1: ['Catacombs of the Dead', 'Sacrificial Pit'],
-      2: ['Coral Castle', 'Sunken Reef'],
-      3: ['Dwarven Mines', 'Cursed Forge'],
-      4: [`Alchemist's Tower`, 'Sacred Grove'],
-      5: [`Sorceror's Bestiary`, `Dragon's Lair`]
-    }})
+  Generate() {
+    this.setState({
+      possiblePlacesOfPower
+        : [['Catacombs of the Dead', 'Sacrificial Pit'],
+        ['Coral Castle', 'Sunken Reef'],
+        ['Dwarven Mines', 'Cursed Forge'],
+        [`Alchemist's Tower`, 'Sacred Grove'],
+        [`Sorceror's Bestiary`, `Dragon's Lair`]
+        ]
+    }, () => { this.ChoosePoPTiles(); });
   }
 
-  RandomizePlacesOfPower() {
-    this.ResetPossiblePlacesOfPower();
-    this.randomizedPlacesOfPower = []
-    console.log(`Press happened.\nhasLuxEtTenebrae = ${this.state.hasLuxEtTenebrae}\nhasPerlaeImperii = ${this.state.hasPerlaeImperii}\nCount of players: ${this.state.numberOfPlayers}`);
-    this.setState({isVisible: true});
+  ChoosePoPTiles() {
+    this.chosenPlacesofPower = []
+    var expansionPlacesOfPower = []
+    this.setState({ isVisible: true });
     var totalPlacesOfPowerToChoose = 5;
     if (this.state.hasLuxEtTenebrae || this.state.hasPerlaeImperii) {
       totalPlacesOfPowerToChoose = this.state.numberOfPlayers + 2;
-      // TODO: add tiles to possiblePlacesOfPower based on which expansion is present
+      if (this.state.hasLuxEtTenebrae) {
+        expansionPlacesOfPower.push(['Temple of the Abyss', 'Gate of Hell']);
+        expansionPlacesOfPower.push(['Dragon Aerie', 'Crystal Keep']);
+      }
+      if (this.state.hasPerlaeImperii) {
+        expansionPlacesOfPower.push(['Blood Isle', 'Pearl Bed']);
+        expansionPlacesOfPower.push(['Alchemical Workshop', 'Mystical Menagerie']);
+      }
+      console.log(`expansionPlacesOfPower = ${expansionPlacesOfPower}`);
+      this.setState({ possiblePlacesOfPower: [...this.state.possiblePlacesOfPower, ...expansionPlacesOfPower] }, () => { this.ChoosePoPTileFaces(totalPlacesOfPowerToChoose); });
     }
+  }
 
+  ChoosePoPTileFaces(totalPlacesOfPowerToChoose: number) {
+    console.log(this.state.possiblePlacesOfPower);
     // initialize an array to keep track of if a randomized number has already been chosen or not
     let randomNumChosenArr = [];
     for (let i = 0; i < totalPlacesOfPowerToChoose; i++) {
       randomNumChosenArr.push(false);
     }
-
+    console.log('');
+    console.log(`length of possiblePlacesOfPower = ${(this.state.possiblePlacesOfPower).length}`);
+    console.log('');
     while (totalPlacesOfPowerToChoose > 0) {
-      var randomNum = Math.floor(Math.random() * Object.keys(this.state.possiblePlacesOfPower).length + 1);
+      var randomNum = Math.floor(Math.random() * this.state.possiblePlacesOfPower.length);
       if (!(randomNumChosenArr[randomNum])) {
         console.log(`randomNum = ${randomNum}`);
-        
+
         console.log(`totalPlacesOfPowerToChoose = ${totalPlacesOfPowerToChoose}`);
         var chosenTile = this.state.possiblePlacesOfPower[randomNum];
         console.log(`chosenTile = ${chosenTile}`);
         randomNumChosenArr[randomNum] = true;
 
-        // randomly choose side of the tile and add to array of randomizedPlacesOfPower
+        // randomly choose side of the tile and add to array of chosenPlacesofPower
+
         var sideOfTile = chosenTile[Math.round(Math.random())];
-        this.randomizedPlacesOfPower.push(sideOfTile);
-        console.log(`randomizedPlacesOfPower = ${this.randomizedPlacesOfPower}`);
+        this.chosenPlacesofPower
+          .push(sideOfTile);
+        console.log(`chosenPlacesofPower = ${this.chosenPlacesofPower}`);
         console.log('');
 
         totalPlacesOfPowerToChoose -= 1;
-      }      
-    }
-    console.log('out of while loop')
-    for (let i = 0; i < totalPlacesOfPowerToChoose; i++) {
-      const randomNum = Math.floor(Math.random() * Object.keys(this.state.possiblePlacesOfPower).length + 1);
-      if (randomNum in this.state.possiblePlacesOfPower) {
-
       }
-      
-      console.log(chosenTile)
     }
   }
 
@@ -159,9 +149,17 @@ export default class App extends Component {
             <View>
               <Button
                 title="Generate Randomized Places of Power"
-                onPress={() => this.RandomizePlacesOfPower()}
+                onPress={() => this.Generate()}
               />
-              {this.state.isVisible?<Text>`{this.randomizedPlacesOfPower}`</Text>:null}
+              {/* {this.state.isVisible?<Text>`{this.chosenPlacesofPower
+          }`</Text>:null} */}
+              {this.state.isVisible
+                ? <GenerateFlatList
+                  chosenPlacesofPower
+                  ={this.chosenPlacesofPower
+                  }
+                />
+                : null}
             </View>
           </View>
         </View>
