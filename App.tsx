@@ -70,6 +70,7 @@ export default class App extends Component {
 
   GeneratePlacesOfPower() {
     console.log(`Press happened.\nhasLuxEtTenebrae = ${this.state.hasLuxEtTenebrae}\nhasPerlaeImperii = ${this.state.hasPerlaeImperii}\nCount of players: ${this.state.numberOfPlayers}`);
+    this.setState({isVisible: true});
   }
 
   render() {
@@ -84,17 +85,16 @@ export default class App extends Component {
               <CheckBox
                 disabled={false}
                 value={this.state.hasLuxEtTenebrae}
-                onValueChange={(value) => this.setState({hasLuxEtTenebrae: value})}
-                // onPress={() => this.setState({hasLuxEtTenebrae: !this.state.hasLuxEtTenebrae})}
-            />
+                onValueChange={(value) => this.setState({ hasLuxEtTenebrae: value })}
+              />
             </View>
             <View>
               <Text>{`Perlae Imperii: ${this.state.hasPerlaeImperii}`}</Text>
               <CheckBox
                 disabled={false}
                 value={this.state.hasPerlaeImperii}
-                // onValueChange={(value) => this.setState(hasPerlaeImperii: value)}
-            />
+                onValueChange={(value) => this.setState({ hasPerlaeImperii: value })}
+              />
             </View>
           </View>
           <View>
@@ -103,6 +103,7 @@ export default class App extends Component {
                 title="Generate Randomized Places of Power"
                 onPress={() => this.GeneratePlacesOfPower()}
               />
+              {this.state.isVisible?<Text>Is Visible</Text>:null}
             </View>
           </View>
         </View>
