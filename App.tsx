@@ -45,6 +45,32 @@ export default class App extends Component {
     hasLuxEtTenebrae: false,
     hasPerlaeImperii: false,
     isVisible: false,
+    radioButtonData: [
+      {
+        id: '2', // acts as primary key, should be unique and non-empty string
+        label: '2',
+        value: '2',
+        onPress: ()=>this.setState({numberOfPlayers: 2})
+      },
+      {
+        id: '3', // acts as primary key, should be unique and non-empty string
+        label: '3',
+        value: '3',
+        onPress: ()=>this.setState({numberOfPlayers: 3})
+      },
+      {
+        id: '4', // acts as primary key, should be unique and non-empty string
+        label: '4',
+        value: '4',
+        onPress: ()=>this.setState({numberOfPlayers: 4})
+      },
+      {
+        id: '5', // acts as primary key, should be unique and non-empty string
+        label: '5',
+        value: '5',
+        onPress: ()=>this.setState({numberOfPlayers: 5})
+      }
+    ],
     possiblePlacesOfPower
       : [['Catacombs of the Dead', 'Sacrificial Pit'],
       ['Coral Castle', 'Sunken Reef'],
@@ -55,6 +81,8 @@ export default class App extends Component {
   };
 
   chosenPlacesofPower: string[] = []
+
+  OnPressRadioButton = radioButtonData => this.setState({ radioButtonData });
 
   Generate() {
     this.setState({
@@ -73,9 +101,9 @@ export default class App extends Component {
     var expansionPlacesOfPower = []
     this.setState({ isVisible: true });
     var totalPlacesOfPowerToChoose = 5;
-    // add place of power tiles to the possiblePlacesOfPower array if expansions are being used, as well as change the necessary # of places of power to use
     if (this.state.hasLuxEtTenebrae || this.state.hasPerlaeImperii) {
       totalPlacesOfPowerToChoose = this.state.numberOfPlayers + 2;
+      console.log(`totalPlacesOfPowerToChoose = ${totalPlacesOfPowerToChoose}`)
       if (this.state.hasLuxEtTenebrae) {
         expansionPlacesOfPower.push(['Temple of the Abyss', 'Gate of Hell']);
         expansionPlacesOfPower.push(['Dragon Aerie', 'Crystal Keep']);
@@ -86,6 +114,8 @@ export default class App extends Component {
       }
       console.log(`expansionPlacesOfPower = ${expansionPlacesOfPower}`);
       this.setState({ possiblePlacesOfPower: [...this.state.possiblePlacesOfPower, ...expansionPlacesOfPower] }, () => { this.ChoosePoPTileFaces(totalPlacesOfPowerToChoose); });
+    } else {
+      this.ChoosePoPTileFaces(totalPlacesOfPowerToChoose);
     }
   }
 
@@ -128,6 +158,14 @@ export default class App extends Component {
       <View>
         <Header />
         <View>
+          <View>
+            <Text>Number of Players</Text>
+            <RadioGroup
+              radioButtons={this.state.radioButtonData}
+              onPress={this.OnPressRadioButton}
+              layout='row'
+            />
+          </View>
           <View>
             <Text>Expansions</Text>
             <View>
