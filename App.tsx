@@ -29,7 +29,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Circle = ({color}) => {
+const Circle = ({ color }) => {
   return <View
     style={{
       width: 8,
@@ -44,7 +44,7 @@ const Circle = ({color}) => {
   />;
 }
 
-const colorArray = ['#F5BA25','#1B83F0'] // gold, blue in that order
+const colorArray = ['#F5BA25', '#1B83F0'] // gold, blue in that order
 
 function GenerateFlatList({ chosenPlacesofPower }) {
 
@@ -53,11 +53,18 @@ function GenerateFlatList({ chosenPlacesofPower }) {
     renderItem={({ item }) =>
       <View style={{ flex: 1, flexDirection: 'row' }}>
         <Text>{item.name}</Text>
-        <Circle color={colorArray[item.colorIndex]}/> 
+        <Circle color={colorArray[item.colorIndex]} />
       </View>
     }
   />;
 }
+
+const baseGamePlacesOfPower = [['Catacombs of the Dead', 'Sacrificial Pit'],
+['Coral Castle', 'Sunken Reef'],
+['Cursed Forge', 'Dwarven Mines'],
+['Sacred Grove', `Alchemist's Tower`],
+[`Dragon's Lair`, `Sorceror's Bestiary`]
+];
 
 export default class App extends Component {
   state = {
@@ -92,12 +99,7 @@ export default class App extends Component {
       }
     ],
     possiblePlacesOfPower
-      : [['Catacombs of the Dead', 'Sacrificial Pit'],
-      ['Coral Castle', 'Sunken Reef'],
-      ['Dwarven Mines', 'Cursed Forge'],
-      [`Alchemist's Tower`, 'Sacred Grove'],
-      [`Sorceror's Bestiary`, `Dragon's Lair`]
-      ]
+      : baseGamePlacesOfPower
   };
 
   chosenPlacesofPower = []
@@ -106,13 +108,7 @@ export default class App extends Component {
 
   Generate() {
     this.setState({
-      possiblePlacesOfPower
-        : [['Catacombs of the Dead', 'Sacrificial Pit'],
-        ['Coral Castle', 'Sunken Reef'],
-        ['Dwarven Mines', 'Cursed Forge'],
-        [`Alchemist's Tower`, 'Sacred Grove'],
-        [`Sorceror's Bestiary`, `Dragon's Lair`]
-        ]
+      possiblePlacesOfPower: baseGamePlacesOfPower
     }, () => { this.ChoosePoPTiles(); });
   }
 
@@ -130,7 +126,7 @@ export default class App extends Component {
       }
       if (this.state.hasPerlaeImperii) {
         expansionPlacesOfPower.push(['Blood Isle', 'Pearl Bed']);
-        expansionPlacesOfPower.push(['Alchemical Workshop', 'Mystical Menagerie']);
+        expansionPlacesOfPower.push(['Mystical Menagerie', 'Alchemical Workshop']);
       }
       console.log(`expansionPlacesOfPower = ${expansionPlacesOfPower}`);
       this.setState({ possiblePlacesOfPower: [...this.state.possiblePlacesOfPower, ...expansionPlacesOfPower] }, () => { this.ChoosePoPTileFaces(totalPlacesOfPowerToChoose); });
@@ -165,7 +161,7 @@ export default class App extends Component {
         // randomly choose one side of the PoP tile and add to array of chosenPlacesofPower
         var numSideOfTile = Math.round(Math.random()); // let numSideOfTile also match the color on the face, i.e. 0 = gold, 1 = blue
         var sideOfTileName = chosenTile[numSideOfTile];
-        var chosenPoP = {name : sideOfTileName, colorIndex : numSideOfTile};
+        var chosenPoP = { name: sideOfTileName, colorIndex: numSideOfTile };
         this.chosenPlacesofPower.push(chosenPoP);
         console.log(`chosenPlacesofPower = ${this.chosenPlacesofPower}`);
         console.log('');
