@@ -119,7 +119,6 @@ export default class App extends Component {
     var totalPlacesOfPowerToChoose = 5;
     if (this.state.hasLuxEtTenebrae || this.state.hasPerlaeImperii) {
       totalPlacesOfPowerToChoose = this.state.numberOfPlayers + 2;
-      console.log(`totalPlacesOfPowerToChoose = ${totalPlacesOfPowerToChoose}`)
       if (this.state.hasLuxEtTenebrae) {
         expansionPlacesOfPower.push(['Temple of the Abyss', 'Gate of Hell']);
         expansionPlacesOfPower.push(['Dragon Aerie', 'Crystal Keep']);
@@ -128,7 +127,6 @@ export default class App extends Component {
         expansionPlacesOfPower.push(['Blood Isle', 'Pearl Bed']);
         expansionPlacesOfPower.push(['Mystical Menagerie', 'Alchemical Workshop']);
       }
-      console.log(`expansionPlacesOfPower = ${expansionPlacesOfPower}`);
       this.setState({ possiblePlacesOfPower: [...this.state.possiblePlacesOfPower, ...expansionPlacesOfPower] }, () => { this.ChoosePoPTileFaces(totalPlacesOfPowerToChoose); });
     } else {
       this.ChoosePoPTileFaces(totalPlacesOfPowerToChoose);
@@ -136,26 +134,17 @@ export default class App extends Component {
   }
 
   ChoosePoPTileFaces(totalPlacesOfPowerToChoose: number) {
-    console.log(this.state.possiblePlacesOfPower);
     // initialize an array to keep track of if a randomized number has already been chosen or not
     let randomNumChosenArr = [];
     for (let i = 0; i < totalPlacesOfPowerToChoose; i++) {
       randomNumChosenArr.push(false);
     }
 
-    console.log('');
-    console.log(`length of possiblePlacesOfPower = ${(this.state.possiblePlacesOfPower).length}`);
-    console.log('');
-
     // randomly pick an unchosen place of power tile until the needed number has been chosen
     while (totalPlacesOfPowerToChoose > 0) {
       var randomNum = Math.floor(Math.random() * this.state.possiblePlacesOfPower.length);
       if (!(randomNumChosenArr[randomNum])) {
-        console.log(`randomNum = ${randomNum}`);
-
-        console.log(`totalPlacesOfPowerToChoose = ${totalPlacesOfPowerToChoose}`);
         var chosenTile = this.state.possiblePlacesOfPower[randomNum];
-        console.log(`chosenTile = ${chosenTile}`);
         randomNumChosenArr[randomNum] = true;
 
         // randomly choose one side of the PoP tile and add to array of chosenPlacesofPower
@@ -163,8 +152,6 @@ export default class App extends Component {
         var sideOfTileName = chosenTile[numSideOfTile];
         var chosenPoP = { name: sideOfTileName, colorIndex: numSideOfTile };
         this.chosenPlacesofPower.push(chosenPoP);
-        console.log(`chosenPlacesofPower = ${this.chosenPlacesofPower}`);
-        console.log('');
 
         totalPlacesOfPowerToChoose -= 1;
       }
