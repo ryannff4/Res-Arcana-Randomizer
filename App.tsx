@@ -44,21 +44,21 @@ const Circle = ({color}) => {
   />;
 }
 
+const colorArray = ['#F5BA25','#1B83F0'] // gold, blue in that order
+
 function GenerateFlatList({ chosenPlacesofPower }) {
 
-  // parameterize the color being passed into circle to be the color associated with the tile face
   return <FlatList
     data={chosenPlacesofPower}
     renderItem={({ item }) =>
       <View style={{ flex: 1, flexDirection: 'row' }}>
-        <Text>{item}</Text>
-        <Circle color='red'/> 
+        <Text>{item.name}</Text>
+        <Circle color={colorArray[item.colorIndex]}/> 
       </View>
     }
   />;
 }
 
-// function App(): JSX.Element {
 export default class App extends Component {
   state = {
     numberOfPlayers: 2,
@@ -100,7 +100,7 @@ export default class App extends Component {
       ]
   };
 
-  chosenPlacesofPower: string[] = []
+  chosenPlacesofPower = []
 
   OnPressRadioButton = radioButtonData => this.setState({ radioButtonData });
 
@@ -163,8 +163,10 @@ export default class App extends Component {
         randomNumChosenArr[randomNum] = true;
 
         // randomly choose one side of the PoP tile and add to array of chosenPlacesofPower
-        var sideOfTile = chosenTile[Math.round(Math.random())];
-        this.chosenPlacesofPower.push(sideOfTile);
+        var numSideOfTile = Math.round(Math.random()); // let numSideOfTile also match the color on the face, i.e. 0 = gold, 1 = blue
+        var sideOfTileName = chosenTile[numSideOfTile];
+        var chosenPoP = {name : sideOfTileName, colorIndex : numSideOfTile};
+        this.chosenPlacesofPower.push(chosenPoP);
         console.log(`chosenPlacesofPower = ${this.chosenPlacesofPower}`);
         console.log('');
 
