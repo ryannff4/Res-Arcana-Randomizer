@@ -29,12 +29,32 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+const Circle = ({color}) => {
+  return <View
+    style={{
+      width: 8,
+      height: 8,
+      margin: 2,
+      padding: 9,
+      borderRadius: 10,
+      backgroundColor: color,
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+    }}
+  />;
+}
+
 function GenerateFlatList({ chosenPlacesofPower }) {
 
+  // parameterize the color being passed into circle to be the color associated with the tile face
   return <FlatList
-    data={chosenPlacesofPower
+    data={chosenPlacesofPower}
+    renderItem={({ item }) =>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
+        <Text>{item}</Text>
+        <Circle color='red'/> 
+      </View>
     }
-    renderItem={({ item }) => <Text>{item}</Text>}
   />;
 }
 
@@ -50,25 +70,25 @@ export default class App extends Component {
         id: '2', // acts as primary key, should be unique and non-empty string
         label: '2',
         value: '2',
-        onPress: ()=>this.setState({numberOfPlayers: 2})
+        onPress: () => this.setState({ numberOfPlayers: 2 })
       },
       {
         id: '3', // acts as primary key, should be unique and non-empty string
         label: '3',
         value: '3',
-        onPress: ()=>this.setState({numberOfPlayers: 3})
+        onPress: () => this.setState({ numberOfPlayers: 3 })
       },
       {
         id: '4', // acts as primary key, should be unique and non-empty string
         label: '4',
         value: '4',
-        onPress: ()=>this.setState({numberOfPlayers: 4})
+        onPress: () => this.setState({ numberOfPlayers: 4 })
       },
       {
         id: '5', // acts as primary key, should be unique and non-empty string
         label: '5',
         value: '5',
-        onPress: ()=>this.setState({numberOfPlayers: 5})
+        onPress: () => this.setState({ numberOfPlayers: 5 })
       }
     ],
     possiblePlacesOfPower
